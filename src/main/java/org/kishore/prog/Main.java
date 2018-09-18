@@ -25,7 +25,7 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		TSqlLexer lexer = new TSqlLexer(CharStreams.fromString("SELECT * FROM ABCD A WHERE A.TE = 'PQ   R'"));
+		TSqlLexer lexer = new TSqlLexer(CharStreams.fromString("SELECT ISNULL(P, 'EMPTY') FROM ABCD A WITH (INDEX(ABC)) WHERE A.TE = 'PQ   R'"));
 		 
 	    // Get a list of matched tokens
 	    CommonTokenStream tokens = new CommonTokenStream(lexer);
