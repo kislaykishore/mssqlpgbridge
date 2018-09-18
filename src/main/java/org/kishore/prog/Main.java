@@ -6,15 +6,11 @@ package org.kishore.prog;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.kishore.parser.CaseChangingCharStream;
 import org.kishore.parser.MyTSqlParserVisitor;
 import org.kishore.parser.TSqlLexer;
 import org.kishore.parser.TSqlParser;
-import org.kishore.parser.TSqlParser.Select_statementContext;
-import org.kishore.parser.TSqlParser.Sql_clausesContext;
 import org.kishore.parser.TSqlParser.Tsql_fileContext;
-import org.kishore.parser.TSqlParserVisitor;
 
 /**
  * @author kislay
@@ -27,7 +23,12 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		String sql = "SELECT isnull(P, 'EMPTY') from abcd A WITH (INDEX(ABC_Def)) where A.TE = 'pq   R'";
+		//String sql = "SELECT isnull(P, 'EMPTY') from abcd A WITH (INDEX(ABC_Def)) where A.TE = 'pq   R'";
+		//String sql = "CREATE TABLE ##tmp(a int);";
+		String sql = "CREATE TABLE #tmp(a int);";
+		//String sql = "SELECT * FROM ##tmp";
+		//String sql = "SELECT * FROM #tmp";
+		//String sql = "SELECT * FROM tmp";
 		CharStream stream = new CaseChangingCharStream(CharStreams.fromString(sql), true);
 		TSqlLexer lexer = new TSqlLexer(stream);
 		 

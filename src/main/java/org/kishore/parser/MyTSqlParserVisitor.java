@@ -19,10 +19,10 @@ public class MyTSqlParserVisitor extends TSqlParserBaseVisitor<String>{
 		}
 	}
 	
-	public String rename(RuleNode node, String newName) {
+	public String skipNChildren(RuleNode node, int k) {
 		String result = defaultResult();
 		int n = node.getChildCount();
-		for (int i=1; i<n; i++) {
+		for (int i=k; i<n; i++) {
 			if (!shouldVisitNextChild(node, result)) {
 				break;
 			}
@@ -31,7 +31,7 @@ public class MyTSqlParserVisitor extends TSqlParserBaseVisitor<String>{
 			String childResult = c.accept(this);
 			result = aggregateResult(result, childResult);
 		}
-		return " " + newName + result;
+		return " " + result;
 	}
 	
 	@Override
@@ -57,12 +57,38 @@ public class MyTSqlParserVisitor extends TSqlParserBaseVisitor<String>{
 	
 	@Override
 	public String visitISNULL(TSqlParser.ISNULLContext ctx) { 
-		return rename(ctx, "COALESCE");
+		return " COALESCE " + skipNChildren(ctx, 1);
 	}
 	
 	@Override
 	public String visitWith_table_hints(TSqlParser.With_table_hintsContext ctx) {
 		return "";
 	}
+	
+	@Override
+	public String visitCreate_table(TSqlParser.Create_tableContext ctx) {
+		String value = skipNChildren(ctx, 2).trim();
+		if(value.startsWith("##")) {
+			return "CREATE UNLOGGED TABLE " + value.substring(2);
+		} else if(value.startsWith("#")) {
+			return "CREATE TEMP TABLE " + value.substring(1);
+		}
+		return "CREATE TABLE " + value;
+	}
+	
+	@Override
+	public String visitTable_name(TSqlParser.Table_nameContext ctx) {
+		if(ctx.parent instanceof TSqlParser.Create_tableContext) {
+			return ctx.getText();
+		}
+		String val = visitChildren(ctx).trim();
+		if(val.startsWith("##")) {
+			val = val.substring(2);
+		} else if(val.startsWith("#")) {
+			val = val.substring(1);
+		}
+		return " " + val;
+	}
+	
 	
 }
