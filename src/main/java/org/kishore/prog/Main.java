@@ -3,9 +3,11 @@
  */
 package org.kishore.prog;
 
+import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
+import org.kishore.parser.CaseChangingCharStream;
 import org.kishore.parser.MyTSqlParserVisitor;
 import org.kishore.parser.TSqlLexer;
 import org.kishore.parser.TSqlParser;
@@ -25,7 +27,9 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		TSqlLexer lexer = new TSqlLexer(CharStreams.fromString("SELECT ISNULL(P, 'EMPTY') FROM ABCD A WITH (INDEX(ABC)) WHERE A.TE = 'PQ   R'"));
+		String sql = "SELECT isnull(P, 'EMPTY') from abcd A WITH (INDEX(ABC_Def)) where A.TE = 'pq   R'";
+		CharStream stream = new CaseChangingCharStream(CharStreams.fromString(sql), true);
+		TSqlLexer lexer = new TSqlLexer(stream);
 		 
 	    // Get a list of matched tokens
 	    CommonTokenStream tokens = new CommonTokenStream(lexer);
