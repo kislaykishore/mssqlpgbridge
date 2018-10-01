@@ -12,13 +12,20 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.junit.ClassRule;
 import org.junit.Test;
+import org.testcontainers.containers.PostgreSQLContainer;
 
 /**
  * @author kislay
  *
  */
 public class MSSqlPGBridgeTest {
+
+	private static final String TEST_DB = "testdb";
+	
+	@ClassRule
+	public static PostgreSQLContainer POSTGRES_CONTAINER = new PostgreSQLContainer("postgres:alpine").withDatabaseName(TEST_DB);
 
 	@Test
 	public void testTempTableAccess() throws Exception {
@@ -36,7 +43,7 @@ public class MSSqlPGBridgeTest {
 			stmt.executeUpdate("DROP TABLE #abcd");
 		}
 	}
-	
+
 	@Test
 	public void testUnloggedTableAccess() throws Exception {
 		try (Connection conn = connect(); Statement stmt = conn.createStatement()) {
@@ -71,8 +78,7 @@ public class MSSqlPGBridgeTest {
 			stmt.executeUpdate("DROP TABLE #abcd");
 		}
 	}
-	
-	
+
 	@Test
 	public void testWithIndexRemove() throws Exception {
 		String sql = "CREATE TABLE #abcd(a int);INSERT INTO #abcd(a) values(1);INSERT INTO #abcd(a) values(2)";
@@ -86,8 +92,7 @@ public class MSSqlPGBridgeTest {
 			stmt.executeUpdate("DROP TABLE #abcd");
 		}
 	}
-	
-	
+
 	@Test
 	public void testNoLockWithoutWithRemove() throws Exception {
 		String sql = "CREATE TABLE #abcd(a int);INSERT INTO #abcd(a) values(1);INSERT INTO #abcd(a) values(2)";
@@ -113,13 +118,13 @@ public class MSSqlPGBridgeTest {
 		}
 	}
 
-	private static Connection connect() throws SQLException, ClassNotFoundException {
+	private Connection connect() throws SQLException, ClassNotFoundException {
 		Class.forName("mssqlpgbridge.driver.PgAdapterDriver");
-		String dbname = System.getProperty("postgres.dbname");
-		String url = "jdbc:mssqlpgbridge://localhost/" + dbname;
-		String user = System.getProperty("postgres.username");
-		String password = System.getProperty("postgres.password");
-		return DriverManager.getConnection(url, user, password);
+		String jdbcUrl = POSTGRES_CONTAINER.getJdbcUrl();
+		jdbcUrl = jdbcUrl.replace("postgresql", "mssqlpgbridge");
+		String username = POSTGRES_CONTAINER.getUsername();
+		String password = POSTGRES_CONTAINER.getPassword();
+		return DriverManager.getConnection(jdbcUrl, username, password);
 
 	}
 }
