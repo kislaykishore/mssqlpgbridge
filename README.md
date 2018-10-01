@@ -11,7 +11,7 @@ The project builds upon tokenizer and parser Antlr grammars available here: http
 
 ## Building
 
-* Run `./gradlew clean build` to compile the project, generate the jar, and run tests
+* Run `./gradlew clean build -x signArchives` to compile the project, generate the jar, and run tests
 
 ## Usage
 
