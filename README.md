@@ -13,7 +13,7 @@ The project builds upon tokenizer and parser Antlr grammars available here: http
 
 * Pass username and passwords as system properties
 * Set postgres.username, postgres.password, postgres.dbname JVM arguments in build.gradle with postgres username, password and database name respectively
-* Run `./gradlew clean build` to run compile the project, generate the jar, and run tests
+* Run `./gradlew clean build` to compile the project, generate the jar, and run tests
 
 ## Usage
 
