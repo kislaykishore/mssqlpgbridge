@@ -1,4 +1,4 @@
-package org.kishore.parser;
+package mssqlpgbridge.parser;
 
 // Generated from TSqlLexer.g4 by ANTLR 4.7.1
 import org.antlr.v4.runtime.Lexer;

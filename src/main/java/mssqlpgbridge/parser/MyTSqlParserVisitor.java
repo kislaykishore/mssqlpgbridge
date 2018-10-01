@@ -1,4 +1,4 @@
-package org.kishore.parser;
+package mssqlpgbridge.parser;
 
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;

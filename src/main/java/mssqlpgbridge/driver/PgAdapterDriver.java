@@ -3,7 +3,7 @@
  * See the LICENSE file in the project root for more information.
  */
 
-package org.postgresql;
+package mssqlpgbridge.driver;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,6 +26,7 @@ import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 import java.util.logging.StreamHandler;
 
+import org.postgresql.PGProperty;
 import org.postgresql.jdbc.PgAdapterConnection;
 import org.postgresql.util.DriverInfo;
 import org.postgresql.util.ExpressionProperties;
@@ -51,14 +52,14 @@ import org.postgresql.util.WriterHandler;
  * DriverManager. This means that a user can load and register a driver by doing
  * Class.forName("foo.bah.Driver")</p>
  *
- * @see org.postgresql.PGConnection
+ * @see mssqlpgbridge.driver.PGConnection
  * @see java.sql.Driver
  */
 public class PgAdapterDriver implements java.sql.Driver {
 
   private static PgAdapterDriver registeredDriver;
-  private static final Logger PARENT_LOGGER = Logger.getLogger("org.postgresql");
-  private static final Logger LOGGER = Logger.getLogger("org.postgresql.Driver");
+  private static final Logger PARENT_LOGGER = Logger.getLogger("mssqlpgbridge.driver");
+  private static final Logger LOGGER = Logger.getLogger("mssqlpgbridge.driver.Driver");
   private static SharedTimer sharedTimer = new SharedTimer();
   private static final String DEFAULT_PORT =
       "5432";
@@ -208,7 +209,7 @@ public class PgAdapterDriver implements java.sql.Driver {
     // get defaults
     Properties defaults;
 
-    if (!url.startsWith("jdbc:postgreadp:")) {
+    if (!url.startsWith("jdbc:mssqlpgbridge:")) {
       return null;
     }
     try {
@@ -264,7 +265,7 @@ public class PgAdapterDriver implements java.sql.Driver {
     } catch (PSQLException ex1) {
       LOGGER.log(Level.FINE, "Connection error: ", ex1);
       // re-throw the exception, otherwise it will be caught next, and a
-      // org.postgresql.unusual error will be returned instead.
+      // mssqlpgbridge.driver.unusual error will be returned instead.
       throw ex1;
     } catch (java.security.AccessControlException ace) {
       throw new PSQLException(
@@ -550,11 +551,11 @@ public class PgAdapterDriver implements java.sql.Driver {
       l_urlArgs = url.substring(l_qPos + 1);
     }
 
-    if (!l_urlServer.startsWith("jdbc:postgreadp:")) {
-      LOGGER.log(Level.FINE, "JDBC URL must start with \"jdbc:postgresql:\" but was: {0}", url);
+    if (!l_urlServer.startsWith("jdbc:mssqlpgbridge:")) {
+      LOGGER.log(Level.FINE, "JDBC URL must start with \"jdbc:mssqlpgbridge:\" but was: {0}", url);
       return null;
     }
-    l_urlServer = l_urlServer.substring("jdbc:postgresql:".length());
+    l_urlServer = l_urlServer.substring("jdbc:mssqlpgbridge:".length());
 
     if (l_urlServer.startsWith("//")) {
       l_urlServer = l_urlServer.substring(2);

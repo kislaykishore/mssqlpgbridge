@@ -6,11 +6,12 @@ package org.kishore.prog;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
-import org.kishore.parser.CaseChangingCharStream;
-import org.kishore.parser.MyTSqlParserVisitor;
-import org.kishore.parser.TSqlLexer;
-import org.kishore.parser.TSqlParser;
-import org.kishore.parser.TSqlParser.Tsql_fileContext;
+
+import mssqlpgbridge.parser.CaseChangingCharStream;
+import mssqlpgbridge.parser.MyTSqlParserVisitor;
+import mssqlpgbridge.parser.TSqlLexer;
+import mssqlpgbridge.parser.TSqlParser;
+import mssqlpgbridge.parser.TSqlParser.Tsql_fileContext;
 
 /**
  * @author kislay

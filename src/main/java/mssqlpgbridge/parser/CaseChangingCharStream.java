@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.kishore.parser;
+package mssqlpgbridge.parser;
 
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.misc.Interval;

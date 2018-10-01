@@ -16,7 +16,7 @@ public class PgAdapterStatement extends PgStatement {
 	}
 
 	public boolean executeWithFlags(String sql, int flags) throws SQLException {
-		String modifiedSql = SqlAdapter.convertSql(sql);
+		String modifiedSql = SqlConverter.convertSql(sql);
 		return super.executeWithFlags(modifiedSql, flags);
 	}
 
