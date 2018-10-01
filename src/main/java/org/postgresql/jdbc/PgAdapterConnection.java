@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.kishore.sqlpgadapter;
+package org.postgresql.jdbc;
 
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -26,7 +26,7 @@ public class PgAdapterConnection extends PgConnection {
 	public Statement createStatement(int resultSetType, int resultSetConcurrency, int resultSetHoldability)
 			throws SQLException {
 		checkClosed();
-		return new PgStatement(this, resultSetType, resultSetConcurrency, resultSetHoldability);
+		return new PgAdapterStatement(this, resultSetType, resultSetConcurrency, resultSetHoldability);
 	}
 
 }

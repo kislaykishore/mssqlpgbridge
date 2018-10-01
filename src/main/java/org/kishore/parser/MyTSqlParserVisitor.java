@@ -90,5 +90,19 @@ public class MyTSqlParserVisitor extends TSqlParserBaseVisitor<String>{
 		return " " + val;
 	}
 	
+	@Override
+	public String visitFull_table_name(TSqlParser.Full_table_nameContext ctx) {
+		if(ctx.parent instanceof TSqlParser.Create_tableContext) {
+			return ctx.getText();
+		}
+		String val = visitChildren(ctx).trim();
+		if(val.startsWith("##")) {
+			val = val.substring(2);
+		} else if(val.startsWith("#")) {
+			val = val.substring(1);
+		}
+		return " " + val;
+	}
+	
 	
 }
