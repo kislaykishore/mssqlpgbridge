@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'eclipse'
     id 'maven-publish'
+    id 'signing'
 }
 
 repositories {
@@ -9,33 +10,116 @@ repositories {
 }
 
 dependencies {
-    compile 'org.antlr:antlr4-runtime:4.7.1'
-    compile 'org.postgresql:postgresql:42.2.5'
-    testCompile 'junit:junit:4.12'
+    implementation 'org.antlr:antlr4-runtime:4.7.1'
+    implementation 'org.postgresql:postgresql:42.2.5'
+    testImplementation 'junit:junit:4.12'
+}
+
+task sourceJar(type: Jar) {
+    classifier "sources"
+    from sourceSets.main.allJava
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier "javadoc"
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives jar
+    archives sourceJar
+    archives javadocJar
 }
 
 publishing {
     publications {
         mavenJava(MavenPublication) {
-            pom {
-                name = 'MSSQL-Postgres Bridge'
-                description = 'Converts MSSQL compatible SQL queries to Postgres compatible queries'
-                licenses {
-                    license {
-                        name = 'PostgreSQL License'
-                    }
+            groupId 'io.github.kislaykishore'
+            artifactId 'mssqlpgbridge'
+            version '0.0.1'
+        pom {
+            name = 'MSSQL-PostgreSQL bridge driver'
+            description = 'PostgreSQL driver which converts MSSQL compatible queries to PostgreSQL compatible'
+            url = 'https://github.com/kislaykishore/mssqlpgbridge'
+            licenses {
+                license {
+                    name = 'BSD-2-Clause'
+                    url = 'https://jdbc.postgresql.org/about/license.html'
                 }
-                developers {
-                    developer {
-                        id = 'kishore'
-                        name = 'Kislay Kishore'
-                        email = 'kislay.kishore2003@gmail.com'
+            }
+            developers {
+                developer {
+                    id = 'kislaykishore'
+                    name = 'Kislay Kishore'
+                    email = 'kislay.kishore2003@gmail.com'
+                }
+            }
+            scm {
+                url = 'https://github.com/kislaykishore/mssqlpgbridge'
+                connection = 'scm:git:git://github.com/kislaykishore/mssqlpgbridge.git'
+                developerConnection = 'scm:git:ssh://git@github.com:kislaykishore/mssqlpgbridge.git'
+            }
+            }
+            
+            from components.java
+            
+            pom.withXml {
+                def pomFile = file("${project.buildDir}/generated-pom.xml")
+                writeTo(pomFile)
+                def pomAscFile = signing.sign(pomFile).signatureFiles[0]
+                artifact(pomAscFile) {
+                    classifier = null
+                    extension = 'pom.asc'
+                }
+            }
+
+            artifact(sourceJar) {
+                classifier = 'sources'
+            }
+            artifact(javadocJar) {
+                classifier = 'javadoc'
+            }
+            
+            project.tasks.signArchives.signatureFiles.each {
+                artifact(it) {
+                    def matcher = it.file =~ /-(sources|javadoc)\.jar\.asc$/
+                    if (matcher.find()) {
+                        classifier = matcher.group(1)
+                    } else {
+                        classifier = null
                     }
+                    extension = 'jar.asc'
                 }
             }
         }
     }
+    repositories {
+        maven {
+            url "https://oss.sonatype.org/service/local/staging/deploy/maven2"
+            credentials {
+                username sonatypeUsername
+                password sonatypePassword
+            }
+        }
+    }
 }
+
+signing {
+    sign configurations.archives
+}
+
+model {
+    tasks.generatePomFileForMavenJavaPublication {
+        destination = file("$buildDir/generated-pom.xml")
+    }
+    tasks.publishMavenJavaPublicationToMavenLocal {
+        dependsOn project.tasks.signArchives
+    }
+    tasks.publishMavenJavaPublicationToMavenRepository {
+        dependsOn project.tasks.signArchives
+    }
+}
+
 test {
     jvmArgs = [
                   '-Dpostgres.username=testuser',

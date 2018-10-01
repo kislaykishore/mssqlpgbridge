@@ -52,7 +52,7 @@ import org.postgresql.util.WriterHandler;
  * DriverManager. This means that a user can load and register a driver by doing
  * Class.forName("foo.bah.Driver")</p>
  *
- * @see mssqlpgbridge.driver.PGConnection
+ * @see org.postgresql.PGConnection
  * @see java.sql.Driver
  */
 public class PgAdapterDriver implements java.sql.Driver {
