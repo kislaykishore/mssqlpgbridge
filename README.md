@@ -1,6 +1,8 @@
 # SQL Server - PostgreSQL Bridge
 
-This is a PostgresSQL driver which extends the PostgreSQL JDBC driver from https://jdbc.postgresql.org/ to handle SQL Server constructs
+This is a PostgresSQL driver which extends the PostgreSQL JDBC driver from https://jdbc.postgresql.org/ to handle SQL Server constructs. Basically, the intention here is to reduce the effort of migrating from SQL Server to PostgreSQL. We intend to cover as many cases as possible, but we know that there are certain limitations and not all MSSQL queries can directly be converted to PostgreSQL compatible ones.
+
+The project builds upon tokenizer and parser Antlr grammars available here: https://github.com/antlr/grammars-v4/tree/master/tsql and traverses through the parse tree to generate the Postgres compatible SQL.
 
 ## Getting Started
 
