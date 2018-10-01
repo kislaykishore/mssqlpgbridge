@@ -7,7 +7,7 @@ services:
   - docker
 
 install:
-  - ./gradlew build -x check -x signArchives
+  - ./gradlew build -x check -x signArchives --no-daemon
 
 jobs:
   include:
