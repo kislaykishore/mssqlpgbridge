@@ -19,6 +19,8 @@ The project builds upon tokenizer and parser Antlr grammars available here: http
 
 * To load the driver, execute `Class.forName("mssqlpgbridge.driver.PgAdapterDriver");`
 * JDBC URLs have similar construct as that of the Postgres JDBC driver, just that, instead of jdbc:postgresql://, here we have jdbc:mssqlpgbridge://
+* Refer to the test cases for samples
+
  
 ## Contributing
 
