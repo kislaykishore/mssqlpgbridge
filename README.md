@@ -2,7 +2,7 @@
 
 This is a PostgresSQL driver which extends the PostgreSQL JDBC driver from https://jdbc.postgresql.org/ to handle SQL Server constructs. Basically, the intention here is to reduce the effort of migrating from SQL Server to PostgreSQL. We intend to cover as many cases as possible, but we know that there are certain limitations and not all MSSQL queries can directly be converted to PostgreSQL compatible ones.
 
-The project builds upon tokenizer and parser Antlr grammars available here: https://github.com/antlr/grammars-v4/tree/master/tsql and traverses through the parse tree to generate the Postgres compatible SQL.
+The project builds upon Antlr grammars available here: https://github.com/antlr/grammars-v4/tree/master/tsql and traverses through the parse tree to generate the Postgres compatible SQL.
 
 ## Getting Started
 
@@ -15,7 +15,7 @@ The project builds upon tokenizer and parser Antlr grammars available here: http
 
 ## Usage
 
-* To load the driver, execute `Class.forName("mssqlpgbridge.driver.PgAdapterDriver");`
+* In order to load the driver, execute `Class.forName("mssqlpgbridge.driver.PgAdapterDriver");`
 * JDBC URLs have similar construct as that of the Postgres JDBC driver, just that, instead of jdbc:postgresql://, here we have jdbc:mssqlpgbridge://
 * Refer to the test cases for samples
 
