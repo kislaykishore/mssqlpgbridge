@@ -13,7 +13,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import org.junit.ClassRule;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.testcontainers.containers.PostgreSQLContainer;
 
 /**
@@ -23,6 +25,9 @@ import org.testcontainers.containers.PostgreSQLContainer;
 public class MSSqlPGBridgeTest {
 
 	private static final String TEST_DB = "testdb";
+
+	@Rule
+	public ExpectedException thrown = ExpectedException.none();
 
 	@ClassRule
 	public static PostgreSQLContainer POSTGRES_CONTAINER = new PostgreSQLContainer("postgres:alpine")
@@ -96,6 +101,7 @@ public class MSSqlPGBridgeTest {
 
 	@Test
 	public void testSyntaxError() throws Exception {
+		thrown.expect(SQLException.class);
 		String sql = "CREATE TABLE #abcd(a int);SELECT TOP 10 * FROM #abcd;";
 		try (Connection conn = connect(); Statement stmt = conn.createStatement()) {
 			stmt.executeUpdate(sql);
