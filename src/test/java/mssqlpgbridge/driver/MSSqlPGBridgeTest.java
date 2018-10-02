@@ -123,6 +123,24 @@ public class MSSqlPGBridgeTest {
 			stmt.executeUpdate("DROP TABLE #pqrs");
 		}
 	}
+	
+	@Test
+	public void testStatementTermination() throws Exception {
+		// Postgres needs statements in a batch to be separated by semi-colon but as shown in the example below, it is being handled
+		String sql = "CREATE TABLE #pqrs(a int) INSERT INTO #pqrs(a) values(NULL)  INSERT INTO #pqrs(a) values(2)";
+		try (Connection conn = connect(); Statement stmt = conn.createStatement()) {
+			stmt.executeUpdate(sql);
+			try (ResultSet rs = stmt.executeQuery("SELECT ISNULL(a, -1) FROM #pqrs (NOLOCK)")) {
+				rs.next();
+				int v1 = rs.getInt(1);
+				assertThat(v1, equalTo(-1));
+				rs.next();
+				int v2 = rs.getInt(1);
+				assertThat(v2, equalTo(2));
+			}
+			stmt.executeUpdate("DROP TABLE #pqrs");
+		}
+	}
 
 	@Test
 	public void testConnection() throws Exception {
