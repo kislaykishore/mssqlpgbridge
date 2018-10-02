@@ -2902,13 +2902,6 @@ public class TSqlParserBaseVisitor<T> extends AbstractParseTreeVisitor<T> implem
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitSCALAR_FUNCTION(TSqlParser.SCALAR_FUNCTIONContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
 	@Override public T visitBINARY_CHECKSUM(TSqlParser.BINARY_CHECKSUMContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
@@ -3050,6 +3043,13 @@ public class TSqlParserBaseVisitor<T> extends AbstractParseTreeVisitor<T> implem
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public T visitXML_DATA_TYPE_FUNC(TSqlParser.XML_DATA_TYPE_FUNCContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitSCALAR_FUNCTION(TSqlParser.SCALAR_FUNCTIONContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *

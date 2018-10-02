@@ -3129,7 +3129,6 @@ function_call
     : ranking_windowed_function                         #RANKING_WINDOWED_FUNC
     | aggregate_windowed_function                       #AGGREGATE_WINDOWED_FUNC
     | analytic_windowed_function                        #ANALYTIC_WINDOWED_FUNC
-    | scalar_function_name '(' expression_list? ')'     #SCALAR_FUNCTION
     // https://msdn.microsoft.com/en-us/library/ms173784.aspx
     | BINARY_CHECKSUM '(' '*' ')'                       #BINARY_CHECKSUM
     // https://msdn.microsoft.com/en-us/library/hh231076.aspx
@@ -3172,6 +3171,7 @@ function_call
     | ISNULL '(' expression ',' expression ')'          #ISNULL
     // https://docs.microsoft.com/en-us/sql/t-sql/xml/xml-data-type-methods
     | xml_data_type_methods                             #XML_DATA_TYPE_FUNC
+    | scalar_function_name '(' expression_list? ')'     #SCALAR_FUNCTION
     ;
 
 xml_data_type_methods

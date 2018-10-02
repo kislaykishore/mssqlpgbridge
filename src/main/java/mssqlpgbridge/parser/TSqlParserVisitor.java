@@ -2487,13 +2487,6 @@ public interface TSqlParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitANALYTIC_WINDOWED_FUNC(TSqlParser.ANALYTIC_WINDOWED_FUNCContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code SCALAR_FUNCTION}
-	 * labeled alternative in {@link TSqlParser#function_call}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitSCALAR_FUNCTION(TSqlParser.SCALAR_FUNCTIONContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code BINARY_CHECKSUM}
 	 * labeled alternative in {@link TSqlParser#function_call}.
 	 * @param ctx the parse tree
@@ -2640,6 +2633,13 @@ public interface TSqlParserVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitXML_DATA_TYPE_FUNC(TSqlParser.XML_DATA_TYPE_FUNCContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code SCALAR_FUNCTION}
+	 * labeled alternative in {@link TSqlParser#function_call}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSCALAR_FUNCTION(TSqlParser.SCALAR_FUNCTIONContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link TSqlParser#xml_data_type_methods}.
 	 * @param ctx the parse tree

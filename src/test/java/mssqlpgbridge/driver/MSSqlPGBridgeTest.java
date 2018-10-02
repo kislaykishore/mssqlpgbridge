@@ -4,13 +4,17 @@
 package mssqlpgbridge.driver;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Arrays;
 
 import org.junit.ClassRule;
 import org.junit.Rule;
@@ -106,6 +110,48 @@ public class MSSqlPGBridgeTest {
 		try (Connection conn = connect(); Statement stmt = conn.createStatement()) {
 			stmt.executeUpdate(sql);
 
+		}
+	}
+
+	@Test
+	public void testGetDate() throws Exception {
+		String sql1 = "SELECT GETDATE()";
+		String sql2 = "SELECT GETDATE() as dt";
+		try (Connection conn = connect();
+				Statement stmt = conn.createStatement();
+				ResultSet rs = stmt.executeQuery(sql1)) {
+			rs.next();
+			Date dt = rs.getDate(1);
+			assertThat(dt, is(not(equalTo(null))));
+		}
+
+		try (Connection conn = connect();
+				Statement stmt = conn.createStatement();
+				ResultSet rs = stmt.executeQuery(sql2)) {
+			rs.next();
+			Date dt = rs.getDate("dt");
+			assertThat(dt, is(not(equalTo(null))));
+		}
+	}
+
+	@Test
+	public void testGetUTCDate() throws Exception {
+		String sql1 = "SELECT GETUTCDATE()";
+		String sql2 = "SELECT GETUTCDATE() as dt";
+		try (Connection conn = connect();
+				Statement stmt = conn.createStatement();
+				ResultSet rs = stmt.executeQuery(sql1)) {
+			rs.next();
+			Date dt = rs.getDate(1);
+			assertThat(dt, is(not(equalTo(null))));
+		}
+
+		try (Connection conn = connect();
+				Statement stmt = conn.createStatement();
+				ResultSet rs = stmt.executeQuery(sql2)) {
+			rs.next();
+			Date dt = rs.getDate("dt");
+			assertThat(dt, is(not(equalTo(null))));
 		}
 	}
 

@@ -13,25 +13,11 @@ public class MyTSqlParserVisitor extends TSqlParserBaseVisitor<String>{
 		switch(type) {
 		case Token.EOF:
 			return "";
+
 		default:
 			String val = node.getText();
-		    return val == null?"":" " + val;
+			return val == null?"":" " + val;
 		}
-	}
-	
-	public String skipNChildren(RuleNode node, int k) {
-		String result = defaultResult();
-		int n = node.getChildCount();
-		for (int i=k; i<n; i++) {
-			if (!shouldVisitNextChild(node, result)) {
-				break;
-			}
-
-			ParseTree c = node.getChild(i);
-			String childResult = c.accept(this);
-			result = aggregateResult(result, childResult);
-		}
-		return " " + result;
 	}
 	
 	@Override
@@ -45,6 +31,17 @@ public class MyTSqlParserVisitor extends TSqlParserBaseVisitor<String>{
 		}
 		return sb.toString();
 	}
+	
+	@Override
+	public String visitGETDATE(TSqlParser.GETDATEContext ctx) {
+		return " localtimestamp";
+	}
+	
+	@Override
+	public String visitGETUTCDATE(TSqlParser.GETUTCDATEContext ctx) {
+		return " current_timestamp at time zone 'utc'";
+	}
+	
 	
 	@Override
 	public String visitSql_clause(TSqlParser.Sql_clauseContext ctx) {
@@ -103,6 +100,20 @@ public class MyTSqlParserVisitor extends TSqlParserBaseVisitor<String>{
 		}
 		return " " + val;
 	}
-	
+
+	private String skipNChildren(RuleNode node, int k) {
+		String result = defaultResult();
+		int n = node.getChildCount();
+		for (int i=k; i<n; i++) {
+			if (!shouldVisitNextChild(node, result)) {
+				break;
+			}
+
+			ParseTree c = node.getChild(i);
+			String childResult = c.accept(this);
+			result = aggregateResult(result, childResult);
+		}
+		return " " + result;
+	}
 	
 }
