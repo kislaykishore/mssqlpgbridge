@@ -33,6 +33,7 @@ public class MSSqlPGBridgeTest {
 	@Rule
 	public ExpectedException thrown = ExpectedException.none();
 
+	@SuppressWarnings("rawtypes")
 	@ClassRule
 	public static PostgreSQLContainer POSTGRES_CONTAINER = new PostgreSQLContainer("postgres:alpine")
 			.withDatabaseName(TEST_DB);
