@@ -37,7 +37,7 @@ publishing {
         mavenJava(MavenPublication) {
             groupId 'io.github.kislaykishore'
             artifactId 'mssqlpgbridge'
-            version '0.0.1'
+            version '0.0.2-SNAPSHOT'
         pom {
             name = 'MSSQL-PostgreSQL bridge driver'
             description = 'PostgreSQL driver which converts MSSQL compatible queries to PostgreSQL compatible'
