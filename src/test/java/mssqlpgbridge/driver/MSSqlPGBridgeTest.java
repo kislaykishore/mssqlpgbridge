@@ -23,9 +23,10 @@ import org.testcontainers.containers.PostgreSQLContainer;
 public class MSSqlPGBridgeTest {
 
 	private static final String TEST_DB = "testdb";
-	
+
 	@ClassRule
-	public static PostgreSQLContainer POSTGRES_CONTAINER = new PostgreSQLContainer("postgres:alpine").withDatabaseName(TEST_DB);
+	public static PostgreSQLContainer POSTGRES_CONTAINER = new PostgreSQLContainer("postgres:alpine")
+			.withDatabaseName(TEST_DB);
 
 	@Test
 	public void testTempTableAccess() throws Exception {
@@ -94,6 +95,15 @@ public class MSSqlPGBridgeTest {
 	}
 
 	@Test
+	public void testSyntaxError() throws Exception {
+		String sql = "CREATE TABLE #abcd(a int);SELECT TOP 10 * FROM #abcd;";
+		try (Connection conn = connect(); Statement stmt = conn.createStatement()) {
+			stmt.executeUpdate(sql);
+
+		}
+	}
+
+	@Test
 	public void testNoLockWithoutWithRemove() throws Exception {
 		String sql = "CREATE TABLE #abcd(a int);INSERT INTO #abcd(a) values(1);INSERT INTO #abcd(a) values(2)";
 		try (Connection conn = connect(); Statement stmt = conn.createStatement()) {
@@ -106,7 +116,7 @@ public class MSSqlPGBridgeTest {
 			stmt.executeUpdate("DROP TABLE #abcd");
 		}
 	}
-	
+
 	@Test
 	public void testIsNullHandling() throws Exception {
 		String sql = "CREATE TABLE #pqrs(a int);INSERT INTO #pqrs(a) values(NULL);INSERT INTO #pqrs(a) values(2)";
@@ -123,10 +133,11 @@ public class MSSqlPGBridgeTest {
 			stmt.executeUpdate("DROP TABLE #pqrs");
 		}
 	}
-	
+
 	@Test
 	public void testStatementTermination() throws Exception {
-		// Postgres needs statements in a batch to be separated by semi-colon but as shown in the example below, it is being handled
+		// Postgres needs statements in a batch to be separated by semi-colon but as
+		// shown in the example below, it is being handled
 		String sql = "CREATE TABLE #pqrs(a int) INSERT INTO #pqrs(a) values(NULL)  INSERT INTO #pqrs(a) values(2)";
 		try (Connection conn = connect(); Statement stmt = conn.createStatement()) {
 			stmt.executeUpdate(sql);
