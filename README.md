@@ -6,8 +6,7 @@ The project builds upon Antlr grammars available here: https://github.com/antlr/
 
 ## Getting Started
 
-* Install a PostgreSQL instance where you can run the test cases
-* Create a user who has sufficient permissions to run DDL and DML queries
+* The test cases use [TestContainers](https://github.com/testcontainers/testcontainers-java) and therefore docker must be installed
 
 ## Building
 
@@ -18,7 +17,6 @@ The project builds upon Antlr grammars available here: https://github.com/antlr/
 * In order to load the driver, execute `Class.forName("mssqlpgbridge.driver.PgAdapterDriver");`
 * JDBC URLs have similar construct as that of the Postgres JDBC driver, just that, instead of jdbc:postgresql://, here we have jdbc:mssqlpgbridge://
 * Refer to the test cases for samples
-
  
 ## Contributing
 
