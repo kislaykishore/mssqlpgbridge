@@ -12,6 +12,10 @@ The project builds upon Antlr grammars available here: https://github.com/antlr/
 
 * Run `./gradlew clean build -x signArchives` to compile the project, generate the jar, and run tests
 
+## Releases
+
+* The library releases can be downloaded from Maven Central. The coordinates are: io.github.kislaykishore:mssqlpgbridge:0.0.2
+
 ## Usage
 
 * In order to load the driver, execute `Class.forName("mssqlpgbridge.driver.PgAdapterDriver");`
