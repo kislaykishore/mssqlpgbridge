@@ -14,7 +14,7 @@ The project builds upon Antlr grammars available here: https://github.com/antlr/
 
 ## Releases
 
-* The library releases can be downloaded from Maven Central. The coordinates are: io.github.kislaykishore:mssqlpgbridge:0.0.2
+* The library releases can be downloaded from Maven Central. The  groupId and artifactId are io.github.kislaykishore and mssqlpgbridge respectively.
 
 ## Usage
 
