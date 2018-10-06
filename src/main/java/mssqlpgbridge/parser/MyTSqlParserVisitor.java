@@ -99,6 +99,15 @@ public class MyTSqlParserVisitor extends TSqlParserBaseVisitor<String> {
 		}
 		return " " + val;
 	}
+	
+	@Override
+	public String visitDATEADD(TSqlParser.DATEADDContext ctx) {
+		String dp = ctx.getChild(2).accept(this).trim();
+		String increment = ctx.getChild(4).accept(this).trim();
+		String date = ctx.getChild(6).accept(this).trim();
+		
+		return " " + date + " + (" + increment + " * INTERVAL '1 " + dp + "')"; 
+	}
 
 	@Override
 	public String visitDATEDIFF(TSqlParser.DATEDIFFContext ctx) {

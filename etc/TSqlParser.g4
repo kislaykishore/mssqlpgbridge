@@ -3149,7 +3149,7 @@ function_call
     // https://msdn.microsoft.com/en-us/library/ms176050.aspx
     | CURRENT_USER                                      #CURRENT_USER
     // https://msdn.microsoft.com/en-us/library/ms186819.aspx
-    | DATEADD '(' ID ',' expression ',' expression ')'  #DATEADD
+    | DATEADD '(' datepart ',' expression ',' expression ')'  #DATEADD
     // https://msdn.microsoft.com/en-us/library/ms189794.aspx
     | DATEDIFF '(' datepart ',' expression ',' expression ')' #DATEDIFF
     // https://msdn.microsoft.com/en-us/library/ms174395.aspx
