@@ -3,6 +3,7 @@ plugins {
     id 'eclipse'
     id 'maven-publish'
     id 'signing'
+    id 'antlr'
 }
 
 repositories {
@@ -10,11 +11,11 @@ repositories {
 }
 
 dependencies {
+    antlr 'org.antlr:antlr4:4.7.1'
     implementation 'org.antlr:antlr4-runtime:4.7.1'
     implementation 'org.postgresql:postgresql:42.2.5'
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.testcontainers:postgresql:1.9.1'
-    testImplementation 'io.github.kislaykishore:mssqlpgbridge:0.0.2'
 }
 
 task sourceJar(type: Jar) {
@@ -31,6 +32,11 @@ artifacts {
     archives jar
     archives sourceJar
     archives javadocJar
+}
+generateGrammarSource {
+    maxHeapSize = "64m"
+    outputDirectory = file("${project.buildDir}/generated-src/antlr/main/mssqlpgbridge/parser");
+    arguments += ['-package' , 'mssqlpgbridge.parser', '-no-listener', '-visitor']
 }
 
 publishing {
