@@ -8,7 +8,7 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 
 import mssqlpgbridge.parser.CaseChangingCharStream;
-import mssqlpgbridge.parser.MyTSqlParserVisitor;
+import mssqlpgbridge.parser.CustomTSqlParserVisitor;
 import mssqlpgbridge.parser.TSqlLexer;
 import mssqlpgbridge.parser.TSqlParser;
 import mssqlpgbridge.parser.TSqlParser.Tsql_fileContext;
@@ -32,7 +32,7 @@ public class SqlConverter {
 			// parser.setBuildParseTree(true);
 			Tsql_fileContext file = parser.tsql_file();
 
-			MyTSqlParserVisitor visitor = new MyTSqlParserVisitor();
+			CustomTSqlParserVisitor visitor = new CustomTSqlParserVisitor();
 			String str = visitor.visit(file);
 			return str;
 		} catch (Exception ex) {

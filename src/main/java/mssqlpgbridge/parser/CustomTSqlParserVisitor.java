@@ -5,7 +5,7 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.RuleNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
-public class MyTSqlParserVisitor extends TSqlParserBaseVisitor<String> {
+public class CustomTSqlParserVisitor extends TSqlParserBaseVisitor<String> {
 
 	@Override
 	public String visitTerminal(TerminalNode node) {
