@@ -2466,6 +2466,12 @@ public interface TSqlParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitDerived_table(TSqlParser.Derived_tableContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link TSqlParser#datepart}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDatepart(TSqlParser.DatepartContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code RANKING_WINDOWED_FUNC}
 	 * labeled alternative in {@link TSqlParser#function_call}.
 	 * @param ctx the parse tree

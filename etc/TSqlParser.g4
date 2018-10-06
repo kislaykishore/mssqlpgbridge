@@ -3125,6 +3125,11 @@ derived_table
     | '(' table_value_constructor ')'
     ;
 
+datepart
+    : ID
+    ;
+    
+
 function_call
     : ranking_windowed_function                         #RANKING_WINDOWED_FUNC
     | aggregate_windowed_function                       #AGGREGATE_WINDOWED_FUNC
@@ -3146,7 +3151,7 @@ function_call
     // https://msdn.microsoft.com/en-us/library/ms186819.aspx
     | DATEADD '(' ID ',' expression ',' expression ')'  #DATEADD
     // https://msdn.microsoft.com/en-us/library/ms189794.aspx
-    | DATEDIFF '(' ID ',' expression ',' expression ')' #DATEDIFF
+    | DATEDIFF '(' datepart ',' expression ',' expression ')' #DATEDIFF
     // https://msdn.microsoft.com/en-us/library/ms174395.aspx
     | DATENAME '(' ID ',' expression ')'                #DATENAME
     // https://msdn.microsoft.com/en-us/library/ms174420.aspx

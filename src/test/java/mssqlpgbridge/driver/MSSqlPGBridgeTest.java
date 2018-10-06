@@ -207,6 +207,138 @@ public class MSSqlPGBridgeTest {
 	}
 
 	@Test
+	public void testDateDiffYear() throws Exception {
+		String sql = "SELECT DATEDIFF(year, '2011-10-02', '2012-01-01');";
+		try (Connection conn = connect();
+				Statement stmt = conn.createStatement();
+				ResultSet rs = stmt.executeQuery(sql)) {
+
+			rs.next();
+			int v1 = rs.getInt(1);
+			assertThat(v1, equalTo(1));
+		}
+	}
+	
+	@Test
+	public void testDateDiffMonth() throws Exception {
+		String sql = "SELECT DATEDIFF(month, '2011-10-02', '2012-01-01');";
+		try (Connection conn = connect();
+				Statement stmt = conn.createStatement();
+				ResultSet rs = stmt.executeQuery(sql)) {
+
+			rs.next();
+			int v1 = rs.getInt(1);
+			assertThat(v1, equalTo(3));
+		}
+	}
+	
+	@Test
+	public void testDateDiffWeek() throws Exception {
+		String sql = "SELECT DATEDIFF(week, '2011-12-22', '2011-12-31');";
+		try (Connection conn = connect();
+				Statement stmt = conn.createStatement();
+				ResultSet rs = stmt.executeQuery(sql)) {
+
+			rs.next();
+			int v1 = rs.getInt(1);
+			assertThat(v1, equalTo(1));
+		}
+	}
+	
+	@Test
+	public void testDateDiffDay() throws Exception {
+		String sql = "SELECT DATEDIFF(day, '2011-12-29 23:00:00', '2011-12-31 01:00:00')";
+		try (Connection conn = connect();
+				Statement stmt = conn.createStatement();
+				ResultSet rs = stmt.executeQuery(sql)) {
+
+			rs.next();
+			int v1 = rs.getInt(1);
+			assertThat(v1, equalTo(2));
+		}
+	}
+	
+	@Test
+	public void testDateDiffDay_2() throws Exception {
+		String sql = "SELECT DATEDIFF(day, '2011-12-29 23:00:00', '2011-12-31 23:00:00')";
+		try (Connection conn = connect();
+				Statement stmt = conn.createStatement();
+				ResultSet rs = stmt.executeQuery(sql)) {
+
+			rs.next();
+			int v1 = rs.getInt(1);
+			assertThat(v1, equalTo(2));
+		}
+	}
+	
+	@Test
+	public void testDateDiffDay_3() throws Exception {
+		String sql = "SELECT DATEDIFF(day, '2011-12-29 23:00:00', '2011-12-31 23:00:01')";
+		try (Connection conn = connect();
+				Statement stmt = conn.createStatement();
+				ResultSet rs = stmt.executeQuery(sql)) {
+
+			rs.next();
+			int v1 = rs.getInt(1);
+			assertThat(v1, equalTo(3));
+		}
+	}
+	
+	@Test
+	public void testDateDiffDay_4() throws Exception {
+		String sql = "SELECT DATEDIFF(day, '2011-12-31 23:00:01', '2011-12-29 23:00:00')";
+		try (Connection conn = connect();
+				Statement stmt = conn.createStatement();
+				ResultSet rs = stmt.executeQuery(sql)) {
+
+			rs.next();
+			int v1 = rs.getInt(1);
+			assertThat(v1, equalTo(-3));
+		}
+	}
+	
+	@Test
+	public void testDateDiffHour() throws Exception {
+		String sql = "SELECT DATEDIFF(hour, '2011-12-30 08:55', '2011-12-30 09:55')";
+		try (Connection conn = connect();
+				Statement stmt = conn.createStatement();
+				ResultSet rs = stmt.executeQuery(sql)) {
+
+			rs.next();
+			int v1 = rs.getInt(1);
+			assertThat(v1, equalTo(1));
+		}
+	}
+	
+	@Test
+	public void testDateDiffSecond() throws Exception {
+		String sql = "SELECT DATEDIFF(second, '2011-12-30 08:54:55', '2011-12-30 08:56:10')";
+		try (Connection conn = connect();
+				Statement stmt = conn.createStatement();
+				ResultSet rs = stmt.executeQuery(sql)) {
+
+			rs.next();
+			int v1 = rs.getInt(1);
+			assertThat(v1, equalTo(75));
+		}
+	}
+	
+	
+	@Test
+	public void testDateDiffDay_5() throws Exception {
+		String sql = "SELECT DATEDIFF(day, '2011-12-31 23:00:00', '2011-12-29 23:00:00')";
+		try (Connection conn = connect();
+				Statement stmt = conn.createStatement();
+				ResultSet rs = stmt.executeQuery(sql)) {
+
+			rs.next();
+			int v1 = rs.getInt(1);
+			assertThat(v1, equalTo(-2));
+		}
+	}
+
+
+	@Test
 	public void testConnection() throws Exception {
 		String SQL = "SELECT 1;";
 		try (Connection conn = connect();
