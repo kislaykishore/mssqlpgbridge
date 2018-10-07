@@ -11,6 +11,7 @@ import mssqlpgbridge.parser.CaseChangingCharStream;
 import mssqlpgbridge.parser.CustomTSqlParserVisitor;
 import mssqlpgbridge.parser.TSqlLexer;
 import mssqlpgbridge.parser.TSqlParser;
+import mssqlpgbridge.parser.ThrowingErrorListener;
 import mssqlpgbridge.parser.TSqlParser.Tsql_fileContext;
 
 /**
@@ -29,6 +30,8 @@ public class SqlConverter {
 
 			// Pass the tokens to the parser
 			TSqlParser parser = new TSqlParser(tokens);
+			parser.removeErrorListeners();
+			parser.addErrorListener(ThrowingErrorListener.INSTANCE);
 			// parser.setBuildParseTree(true);
 			Tsql_fileContext file = parser.tsql_file();
 
