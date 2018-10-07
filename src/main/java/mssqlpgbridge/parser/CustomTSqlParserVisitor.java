@@ -1,11 +1,15 @@
 package mssqlpgbridge.parser;
 
+import java.util.Stack;
+
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.RuleNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 public class CustomTSqlParserVisitor extends TSqlParserBaseVisitor<String> {
+
+	private Stack<String> topStack = new Stack<>();
 
 	@Override
 	public String visitTerminal(TerminalNode node) {
@@ -99,14 +103,14 @@ public class CustomTSqlParserVisitor extends TSqlParserBaseVisitor<String> {
 		}
 		return " " + val;
 	}
-	
+
 	@Override
 	public String visitDATEADD(TSqlParser.DATEADDContext ctx) {
 		String dp = ctx.getChild(2).accept(this).trim();
 		String increment = ctx.getChild(4).accept(this).trim();
 		String date = ctx.getChild(6).accept(this).trim();
-		
-		return " " + date + " + (" + increment + " * INTERVAL '1 " + dp + "')"; 
+
+		return " " + date + " + (" + increment + " * INTERVAL '1 " + dp + "')";
 	}
 
 	@Override
@@ -125,25 +129,26 @@ public class CustomTSqlParserVisitor extends TSqlParserBaseVisitor<String> {
 			return " TRUNC(DATE_PART('day', " + endDate + "::timestamp - " + startDate + "::timestamp)/7)";
 		case "day":
 			return " CASE WHEN " + endDate + "::timestamp > " + startDate + "::timestamp THEN "
-		           + "(EXTRACT(DAY FROM justify_interval((" + endDate + "::timestamp - " + startDate + "::timestamp) + INTERVAL '0.99999999999 days')))"
-		           + " ELSE "
-		           + " - (EXTRACT(DAY FROM justify_interval((" + startDate + "::timestamp - " + endDate + "::timestamp) + INTERVAL '0.99999999999 days'))) END ";
+					+ "(EXTRACT(DAY FROM justify_interval((" + endDate + "::timestamp - " + startDate
+					+ "::timestamp) + INTERVAL '0.99999999999 days')))" + " ELSE "
+					+ " - (EXTRACT(DAY FROM justify_interval((" + startDate + "::timestamp - " + endDate
+					+ "::timestamp) + INTERVAL '0.99999999999 days'))) END ";
 		case "hour":
-			return " ((((DATE_PART('day', " + endDate + "::timestamp - " + startDate + "::timestamp) * 24 + " + 
-	                "DATE_PART('hour', " + endDate + "::timestamp - " + startDate + "::timestamp)) * 60 + " +
-	                "DATE_PART('minute', " + endDate + "::timestamp - " + startDate + "::timestamp)) * 60 + " +
-	                "DATE_PART('second', " + endDate + "::timestamp - " + startDate + "::timestamp))/3600)::int";
+			return " ((((DATE_PART('day', " + endDate + "::timestamp - " + startDate + "::timestamp) * 24 + "
+					+ "DATE_PART('hour', " + endDate + "::timestamp - " + startDate + "::timestamp)) * 60 + "
+					+ "DATE_PART('minute', " + endDate + "::timestamp - " + startDate + "::timestamp)) * 60 + "
+					+ "DATE_PART('second', " + endDate + "::timestamp - " + startDate + "::timestamp))/3600)::int";
 		case "minute":
-			return " ((((DATE_PART('day', " + endDate + "::timestamp - " + startDate + "::timestamp) * 24 + " + 
-            "DATE_PART('hour', " + endDate + "::timestamp - " + startDate + "::timestamp)) * 60 + " +
-            "DATE_PART('minute', " + endDate + "::timestamp - " + startDate + "::timestamp)) * 60 + " +
-            "DATE_PART('second', " + endDate + "::timestamp - " + startDate + "::timestamp))/60)::int";
+			return " ((((DATE_PART('day', " + endDate + "::timestamp - " + startDate + "::timestamp) * 24 + "
+					+ "DATE_PART('hour', " + endDate + "::timestamp - " + startDate + "::timestamp)) * 60 + "
+					+ "DATE_PART('minute', " + endDate + "::timestamp - " + startDate + "::timestamp)) * 60 + "
+					+ "DATE_PART('second', " + endDate + "::timestamp - " + startDate + "::timestamp))/60)::int";
 		case "second":
-			return " ((DATE_PART('day', " + endDate + "::timestamp - " + startDate + "::timestamp) * 24 + " + 
-	                "DATE_PART('hour', " + endDate + "::timestamp - " + startDate + "::timestamp)) * 60 + " +
-	                "DATE_PART('minute', " + endDate + "::timestamp - " + startDate + "::timestamp)) * 60 + " +
-	                "DATE_PART('second', " + endDate + "::timestamp - " + startDate + "::timestamp)";
-			
+			return " ((DATE_PART('day', " + endDate + "::timestamp - " + startDate + "::timestamp) * 24 + "
+					+ "DATE_PART('hour', " + endDate + "::timestamp - " + startDate + "::timestamp)) * 60 + "
+					+ "DATE_PART('minute', " + endDate + "::timestamp - " + startDate + "::timestamp)) * 60 + "
+					+ "DATE_PART('second', " + endDate + "::timestamp - " + startDate + "::timestamp)";
+
 		}
 		throw new UnsupportedOperationException("Unsupported operation");
 	}
@@ -199,6 +204,28 @@ public class CustomTSqlParserVisitor extends TSqlParserBaseVisitor<String> {
 		default:
 			throw new IllegalArgumentException("Unsupported datepart value found: " + dp);
 		}
+	}
+
+	@Override
+	public String visitTop_count(TSqlParser.Top_countContext ctx) {
+		String count = visitChildren(ctx);
+		topStack.push(count);
+		return "";
+	}
+
+	@Override
+	public String visitTop_clause(TSqlParser.Top_clauseContext ctx) {
+		visitChildren(ctx);
+		return "";
+	}
+
+	@Override
+	public String visitQuery_specification(TSqlParser.Query_specificationContext ctx) {
+		String str = visitChildren(ctx);
+		if (!topStack.isEmpty()) {
+			str += " LIMIT " + topStack.pop();
+		}
+		return str;
 	}
 
 	private String skipNChildren(RuleNode node, int k) {

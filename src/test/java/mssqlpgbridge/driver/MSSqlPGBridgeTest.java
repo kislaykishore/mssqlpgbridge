@@ -105,12 +105,27 @@ public class MSSqlPGBridgeTest {
 	}
 
 	@Test
-	public void testSyntaxError() throws Exception {
-		thrown.expect(SQLException.class);
-		String sql = "CREATE TABLE #abcd(a int);SELECT TOP 10 * FROM #abcd;";
+	public void testHandleTop() throws Exception {
+		String sql = "CREATE TABLE #abcd(a int);INSERT INTO #abcd(a)SELECT 1 UNION SELECT 2 UNION SELECT 3";
 		try (Connection conn = connect(); Statement stmt = conn.createStatement()) {
 			stmt.executeUpdate(sql);
-
+			int count = 0;
+			try(ResultSet rs = stmt.executeQuery("SELECT TOP 2 * FROM #abcd")) {
+				while(rs.next()) {
+					count++;
+				}
+			}
+			assertThat(count, equalTo(2));
+			stmt.executeUpdate("DROP TABLE #abcd");
+		}
+	}
+	
+	@Test
+	public void testSyntaxError() throws Exception {
+		thrown.expect(SQLException.class);
+		String sql = "SELECT TOP sdf324 * FROM #abcd";
+		try (Connection conn = connect(); Statement stmt = conn.createStatement()) {
+			stmt.executeQuery(sql);
 		}
 	}
 
