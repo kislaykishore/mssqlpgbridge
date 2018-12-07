@@ -1,0 +1,26 @@
+<configuration>
+
+    <appender name="FILE_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>test.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>test-%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <maxFileSize>450MB</maxFileSize>
+        </rollingPolicy>
+
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>[ %d [%t] [%X{username}] [%X{ARC_REQUEST_ID}] %C{2}.%M\(\):%L %-5p]: %m%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="ASYNC_FILE_APPENDER" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="FILE_APPENDER" />
+    </appender>
+
+    <!-- Strictly speaking, the level attribute is not necessary since -->
+    <!-- the level of the root level is set to DEBUG by default. -->
+    <root level="INFO">
+        <appender-ref ref="ASYNC_FILE_APPENDER" />
+    </root>
+
+</configuration>
