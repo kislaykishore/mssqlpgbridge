@@ -20,23 +20,20 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.containers.MSSQLServerContainer;
 
 /**
  * @author kislay
  *
  */
-public class MSSqlPGBridgeTest {
-
-	private static final String TEST_DB = "testdb";
+public class SqlServerTest {
 
 	@Rule
 	public ExpectedException thrown = ExpectedException.none();
 
 	@SuppressWarnings("rawtypes")
 	@ClassRule
-	public static PostgreSQLContainer POSTGRES_CONTAINER = new PostgreSQLContainer("postgres:alpine")
-			.withDatabaseName(TEST_DB);
+	public static MSSQLServerContainer SQL_SERVER_CONTAINER = new MSSQLServerContainer();
 
 	@Test
 	public void testTempTableAccess() throws Exception {
@@ -68,7 +65,7 @@ public class MSSqlPGBridgeTest {
 				int v2 = rs.getInt(1);
 				assertThat(v2, equalTo(2));
 			}
-			stmt.executeUpdate("DROP TABLE #abcd");
+			stmt.executeUpdate("DROP TABLE ##abcd");
 		}
 	}
 
@@ -281,33 +278,7 @@ public class MSSqlPGBridgeTest {
 			assertThat(v1, equalTo(2));
 		}
 	}
-	
-	@Test
-	public void testDateDiffDay_3() throws Exception {
-		String sql = "SELECT DATEDIFF(day, '2011-12-29 23:00:00', '2011-12-31 23:00:01')";
-		try (Connection conn = connect();
-				Statement stmt = conn.createStatement();
-				ResultSet rs = stmt.executeQuery(sql)) {
 
-			rs.next();
-			int v1 = rs.getInt(1);
-			assertThat(v1, equalTo(3));
-		}
-	}
-	
-	@Test
-	public void testDateDiffDay_4() throws Exception {
-		String sql = "SELECT DATEDIFF(day, '2011-12-31 23:00:01', '2011-12-29 23:00:00')";
-		try (Connection conn = connect();
-				Statement stmt = conn.createStatement();
-				ResultSet rs = stmt.executeQuery(sql)) {
-
-			rs.next();
-			int v1 = rs.getInt(1);
-			assertThat(v1, equalTo(-3));
-		}
-	}
-	
 	@Test
 	public void testDateDiffHour() throws Exception {
 		String sql = "SELECT DATEDIFF(hour, '2011-12-30 08:55', '2011-12-30 09:55')";
@@ -403,12 +374,12 @@ public class MSSqlPGBridgeTest {
 	}
 
 	private Connection connect() throws SQLException, ClassNotFoundException {
-		Class.forName("mssqlpgbridge.driver.PgAdapterDriver");
-		String jdbcUrl = POSTGRES_CONTAINER.getJdbcUrl();
-		jdbcUrl = jdbcUrl.replace("postgresql", "mssqlpgbridge");
-		String username = POSTGRES_CONTAINER.getUsername();
-		String password = POSTGRES_CONTAINER.getPassword();
-		return DriverManager.getConnection(jdbcUrl, username, password);
+		Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+		String url = SQL_SERVER_CONTAINER.getJdbcUrl();
+		String username = SQL_SERVER_CONTAINER.getUsername();
+		String password = SQL_SERVER_CONTAINER.getPassword();
+		return DriverManager.getConnection(url, username, password);
+
 
 	}
 }
