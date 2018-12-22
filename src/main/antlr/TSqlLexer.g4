@@ -825,6 +825,7 @@ DOUBLE_QUOTE_ID:    '"' ~'"'+ '"';
 SINGLE_QUOTE:       '\'';
 SQUARE_BRACKET_ID:  '[' ~']'+ ']';
 LOCAL_ID:           '@' ([A-Z_$@#0-9] | FullWidthLetter)+;
+QUESTION_MARK    :   '?';
 DECIMAL:             DEC_DIGIT+;
 ID:                  ( [A-Z_#] | FullWidthLetter) ( [A-Z_#$@0-9] | FullWidthLetter )*;
 QUOTED_URL:          '\''([A-Z][A-Z]+[:]) '//'(([A-Z]+[.]|[A-Z]+)|IPV4_ADDR) [:] DECIMAL '\'';

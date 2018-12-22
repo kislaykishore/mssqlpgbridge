@@ -30,9 +30,11 @@ public class PgAdapterConnection extends PgConnection {
 	}
 
 	@Override
-	public PreparedStatement prepareStatement(String sql) throws SQLException {
+	public PreparedStatement prepareStatement(String sql, int resultSetType, int resultSetConcurrency,
+			int resultSetHoldability) throws SQLException {
 		String modifiedSql = SqlConverter.convertSql(sql);
-		return prepareStatement(modifiedSql, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+		checkClosed();
+		return new PgPreparedStatement(this, modifiedSql, resultSetType, resultSetConcurrency, resultSetHoldability);
 	}
 
 }

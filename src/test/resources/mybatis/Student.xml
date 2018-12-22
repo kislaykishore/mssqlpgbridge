@@ -13,4 +13,10 @@
 	   SELECT a FROM #abcd;
    </select>
    
+   <select id="paramsFetch" resultType="string">
+       CREATE TABLE #pq(a int, b varchar);
+       INSERT INTO #pq(a, b) values(12, 'hello');
+       SELECT b FROM #pq WHERE a = #{id};
+   </select>
+   
 </mapper>

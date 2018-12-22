@@ -2815,7 +2815,7 @@ expression
     ;
 
 primitive_expression
-    : DEFAULT | NULL | LOCAL_ID | constant
+    : DEFAULT | NULL | LOCAL_ID | constant | QUESTION_MARK
     ;
 
 // https://docs.microsoft.com/en-us/sql/t-sql/language-elements/case-transact-sql

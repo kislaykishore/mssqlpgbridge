@@ -74,6 +74,12 @@ public class MyBatisTest {
 		Integer val = this.session.selectOne("fetchHello");
 		assertThat(val, equalTo(1));
 	}
+	
+	@Test
+	public void testParams() {
+		String str = this.session.selectOne("paramsFetch", 12);
+		assertThat(str, equalTo("hello"));
+	}
 
 	@Test
 	public void testTempTable() {
