@@ -3,12 +3,12 @@
  */
 package org.postgresql.jdbc;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
 
-import org.postgresql.jdbc.PgConnection;
-import org.postgresql.jdbc.PgStatement;
 import org.postgresql.util.HostSpec;
 
 /**
@@ -21,12 +21,18 @@ public class PgAdapterConnection extends PgConnection {
 			throws SQLException {
 		super(hostSpecs, user, database, info, url);
 	}
-	
-	 @Override
+
+	@Override
 	public Statement createStatement(int resultSetType, int resultSetConcurrency, int resultSetHoldability)
 			throws SQLException {
 		checkClosed();
 		return new PgAdapterStatement(this, resultSetType, resultSetConcurrency, resultSetHoldability);
+	}
+
+	@Override
+	public PreparedStatement prepareStatement(String sql) throws SQLException {
+		String modifiedSql = SqlConverter.convertSql(sql);
+		return prepareStatement(modifiedSql, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
 	}
 
 }

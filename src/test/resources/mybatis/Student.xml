@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace = "mybatis.Student">
+
+   <select id="fetchHello" resultType="int" >
+       SELECT 1;
+   </select>
+    	
+   <select id="fetchValues" resultType="int">
+	   CREATE TABLE #abcd(a int);INSERT INTO #abcd(a) values(1);INSERT INTO #abcd(a) values(2);
+	   SELECT a FROM #abcd;
+   </select>
+   
+</mapper>
