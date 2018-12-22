@@ -318,49 +318,6 @@ public class SqlServerTest {
 			assertThat(v1, equalTo(-2));
 		}
 	}
-	
-	@Test
-	public void testDateAddDay() throws Exception {
-		String sql = "SELECT DATEADD(day, 1, GETDATE())";
-		try (Connection conn = connect();
-				Statement stmt = conn.createStatement();
-				ResultSet rs = stmt.executeQuery(sql)) {
-			rs.next();
-			Date v1 = rs.getDate(1);
-			assertThat(v1, not(equalTo(null)));
-			Date dt = Date.valueOf(LocalDate.now().plusDays(1));
-			assertThat(v1, equalTo(dt));
-		}
-	}
-	
-	@Test
-	public void testDateAddYear() throws Exception {
-		String sql = "SELECT DATEADD(year, -1, GETDATE())";
-		try (Connection conn = connect();
-				Statement stmt = conn.createStatement();
-				ResultSet rs = stmt.executeQuery(sql)) {
-			rs.next();
-			Date v1 = rs.getDate(1);
-			assertThat(v1, not(equalTo(null)));
-			Date dt = Date.valueOf(LocalDate.now().plusYears(-1));
-			assertThat(v1, equalTo(dt));
-		}
-	}
-	
-	@Test
-	public void testDateAddMonths() throws Exception {
-		String sql = "SELECT DATEADD(month, -1, GETDATE())";
-		try (Connection conn = connect();
-				Statement stmt = conn.createStatement();
-				ResultSet rs = stmt.executeQuery(sql)) {
-			rs.next();
-			Date v1 = rs.getDate(1);
-			assertThat(v1, not(equalTo(null)));
-			Date dt = Date.valueOf(LocalDate.now().plusMonths(-1));
-			assertThat(v1, equalTo(dt));
-		}
-	}
-
 
 	@Test
 	public void testConnection() throws Exception {
