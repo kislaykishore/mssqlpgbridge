@@ -35,6 +35,16 @@ task sourceJar(type: Jar) {
     }
 }
 
+test {
+    if (project.hasProperty('maxParallelForks')) {
+        maxParallelForks = project.maxParallelForks as int
+    } else {
+        maxParallelForks = 3
+    }
+    if (project.hasProperty('forkEvery'))
+        forkEvery = project.forkEvery as int
+}
+
 task javadocJar(type: Jar, dependsOn: javadoc) {
     classifier "javadoc"
     from javadoc.destinationDir
