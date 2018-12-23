@@ -18,5 +18,5 @@ install: true
 jobs:
   include:
     - stage: test 
-      script: ./gradlew clean build -x signArchives --no-daemon --scan -s
+      script: ./gradlew clean build -x signArchives --no-daemon
 
