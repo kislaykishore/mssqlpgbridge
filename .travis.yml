@@ -17,10 +17,7 @@ install: true
 
 jobs:
   include:
-    - stage: check 
+    - stage: test 
       script: ./gradlew check javadoc
-
-    - stage: test
-      script:
-        - ./gradlew --no-daemon test
+    - script: ./gradlew --no-daemon test
 
