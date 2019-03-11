@@ -4,6 +4,8 @@ This is a PostgresSQL driver which extends the PostgreSQL JDBC driver from https
 
 The project builds upon Antlr grammars available here: https://github.com/antlr/grammars-v4/tree/master/tsql and traverses through the parse tree to generate the Postgres compatible SQL.
 
+[![Build Status](https://travis-ci.org/kislaykishore/mssqlpgbridge.svg?branch=master)](https://travis-ci.org/kislaykishore/mssqlpgbridge)
+
 ## Getting Started
 
 * The test cases use [TestContainers](https://github.com/testcontainers/testcontainers-java) and therefore docker must be installed
