@@ -8,6 +8,7 @@ import static org.junit.Assert.assertThat;
 
 import java.io.IOException;
 import java.io.Reader;
+import javax.sql.DataSource;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -20,7 +21,8 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.ibatis.transaction.TransactionFactory;
 import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
-import org.apache.tomcat.jdbc.pool.DataSource;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -53,12 +55,13 @@ public class MyBatisTest {
 			jdbcUrl = jdbcUrl.replace("postgresql", "mssqlpgbridge");
 			String username = POSTGRES_CONTAINER.getUsername();
 			String password = POSTGRES_CONTAINER.getPassword();
+                        HikariConfig cfg = new HikariConfig();
+                        cfg.setUsername(username);
+                        cfg.setPassword(password);
+                        cfg.setJdbcUrl(jdbcUrl);
+			cfg.setDriverClassName("mssqlpgbridge.driver.PgAdapterDriver");
 
-			DataSource ds = new DataSource();
-			ds.setDriverClassName("mssqlpgbridge.driver.PgAdapterDriver");
-			ds.setUrl(jdbcUrl);
-			ds.setUsername(username);
-			ds.setPassword(password);
+			DataSource ds = new HikariDataSource(cfg);
 			TransactionFactory transactionFactory = new JdbcTransactionFactory();
 			Environment environment = new Environment("development", transactionFactory, ds);
 			Configuration config = new Configuration(environment);
